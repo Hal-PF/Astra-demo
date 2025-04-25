@@ -10,7 +10,8 @@
 ## Demo
 Open `demo.html` to interact with the live prototype:
 
-![QuickSearch Demo](assets/background.jpg)
+[View QuickSearch Demo](./QuickSearch/demo.html)
+
 
 ## Design Tokens
 | Token           | Value     | Description                          |
