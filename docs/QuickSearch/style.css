@@ -15,7 +15,7 @@
       position: relative;
       width: 100%;
       height: 500px;
-      background-image: url('/assets/background.jpg');
+      background-image: url('docs/QuickSearch/assets/background.jpg');
       background-size: cover;
       background-position: center;
       display: flex;
