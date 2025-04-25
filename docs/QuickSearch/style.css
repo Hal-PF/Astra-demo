@@ -229,7 +229,7 @@
 
     .quick-link {
       /* Decreased padding and font size */
-      padding: 6px 12px;
+      padding: 8px 16px;
       background-color: rgba(255, 255, 255, 0.7);
       color: #333;
       border-radius: 16px; /* Slightly smaller border radius */
