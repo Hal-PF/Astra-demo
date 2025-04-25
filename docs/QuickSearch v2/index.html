@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -39,4 +39,185 @@
 
   <script src="script.js"></script>
 </body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>QuickSearch v2 Integrated Demo</title>
+  <style>
+    * { box-sizing: border-box; margin:0; padding:0; font-family:"Segoe UI","Roboto","Helvetica Neue",Arial,sans-serif; }
+    body { background:#f8f9fa; }
+    .hero-container {
+      position: relative; width:100%; height:300px;
+      background:url("https://via.placeholder.com/1200x300") center/cover no-repeat;
+      display:flex; flex-direction:column; justify-content:center; align-items:center;
+    }
+    .hero-overlay {
+      position:absolute; top:0; left:0; width:100%; height:100%;
+      background:rgba(0,0,0,0.3); z-index:1;
+    }
+    .container {
+      position:relative; z-index:2; width:90%; max-width:800px; padding-top:40px;
+    }
+    /* Tabs */
+    .tabs { display:flex; background:rgba(255,255,255,0.9); border-radius:25px; overflow:hidden; }
+    .tab {
+      flex:1; padding:10px; text-align:center; cursor:pointer;
+      font-weight:500; color:#555; transition:background 0.2s;
+    }
+    .tab:not(:last-child) { border-right:1px solid #eee; }
+    .tab.active { background:#f0f0ff; color:#4B0082; }
+    .tab.new::after {
+      content:"NEW"; font-size:10px; background:#4B0082; color:#fff;
+      padding:2px 6px; border-radius:3px; margin-left:4px;
+    }
+    /* Search Bar */
+    .search-container { position:relative; margin:20px 0; }
+    .search-bar {
+      display:flex; background:#fff; border-radius:30px; overflow:hidden;
+      box-shadow:0 4px 12px rgba(0,0,0,0.1);
+    }
+    .search-input {
+      flex:1; padding:12px 16px; border:none; outline:none; font-size:16px;
+    }
+    .search-button {
+      background:#EF5E4E; color:#fff; border:none; padding:0 20px; cursor:pointer;
+    }
+    /* Suggestions Dropdown */
+    .suggestions-dropdown {
+      position:absolute; top:calc(100% + 8px); left:0; width:100%;
+      background:#fff; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1);
+      max-height:0; overflow:hidden; transition:max-height 0.2s ease-out;
+      z-index:10;
+    }
+    .suggestions-dropdown.active {
+      max-height:300px; overflow:auto;
+    }
+    .suggestions-content {
+      display:grid; grid-template-columns:1fr 1fr; gap:16px; padding:16px;
+    }
+    .locations-column, .suggestions-column {
+      display:flex; flex-direction:column; gap:8px;
+    }
+    .column-title {
+      font-weight:600; font-size:14px; color:#333;
+      padding-bottom:8px; border-bottom:1px solid #e0e0e0; margin-bottom:8px;
+    }
+    .suggestion-item {
+      padding:8px 12px; border-radius:6px; cursor:pointer;
+      font-size:14px; color:#333; transition:background 0.2s;
+    }
+    .suggestion-item:hover { background:#f5f5f5; }
+    .suggestion-highlight { color:#4B0082; font-weight:500; }
+    /* Quick Links */
+    .quick-links-container { display:flex; flex-wrap:wrap; gap:10px; }
+    .quick-link {
+      padding:6px 12px; background:rgba(255,255,255,0.7); border-radius:16px;
+      font-size:12px; color:#333; cursor:pointer; transition:0.2s; backdrop-filter:blur(4px);
+    }
+    .quick-link:hover { background:#f0f0ff; color:#4B0082; transform:translateY(-2px); }
+  </style>
+</head>
+<body>
+  <div class="hero-container">
+    <div class="hero-overlay"></div>
+    <div class="container">
+      <div class="tabs">
+        <div class="tab" data-category="rent">Rent</div>
+        <div class="tab active" data-category="buy">Buy</div>
+        <div class="tab new" data-category="new">New projects</div>
+        <div class="tab" data-category="commercial">Commercial</div>
+      </div>
+      <div class="search-container">
+        <div class="search-bar">
+          <input class="search-input" placeholder="Type at least 2 chars…" />
+          <button class="search-button">Search</button>
+        </div>
+        <div class="suggestions-dropdown" id="suggestionsDropdown"></div>
+      </div>
+      <div class="quick-links-container" id="quickLinks"></div>
+    </div>
+  </div>
+
+  <script>
+    // Data
+    const categories = {
+      rent: ["Apartments for Rent in Dubai","Apartments for Rent in Downtown Dubai","Apartments for Rent in Dubai Marina","Villas for Rent in Dubai","Studios for Rent in Dubai"],
+      buy:  ["Apartments for Sale in Business Bay","Apartments for Sale in Dubai Marina","Villas for Sale in Dubai","Penthouses for Sale","Townhouses for Sale"],
+      new:  ["Off Plan Projects in UAE","New Projects in Dubai","New Projects in Abu Dhabi","Waterfront Developments","Luxury Off-Plan Projects"],
+      commercial: ["Office Spaces in Dubai","Retail Shops for Rent","Warehouses for Sale","Commercial Properties in Business Bay","Commercial Plots"]
+    };
+    const locations = ["Dubai Marina","Marina Residences","Marina Square","Marina Gate","Marina Promenade","Marina Wharf"];
+    const suggestions = ["Office Spaces for Sale in Dubai Marina","Retail Units for Rent in Dubai Marina","Commercial Properties in Dubai Marina"];
+
+    // Elements
+    const tabs    = document.querySelectorAll('.tab');
+    const input   = document.querySelector('.search-input');
+    const button  = document.querySelector('.search-button');
+    const dropdown= document.getElementById('suggestionsDropdown');
+    const quickLinks = document.getElementById('quickLinks');
+
+    // Render pills
+    function renderLinks(cat) {
+      quickLinks.innerHTML = '';
+      categories[cat].forEach(text => {
+        const d = document.createElement('div');
+        d.className = 'quick-link';
+        d.textContent = text;
+        d.onclick = () => input.value = text;
+        quickLinks.append(d);
+      });
+    }
+
+    // Show 2-col suggestions
+    function showSuggestions(q) {
+      const locs = locations.filter(l=>l.toLowerCase().includes(q));
+      const sugs = suggestions.filter(s=>s.toLowerCase().includes(q));
+      if(!locs.length && !sugs.length) return dropdown.classList.remove('active');
+
+      dropdown.innerHTML = `
+        <div class="suggestions-content">
+          <div class="locations-column">
+            <div class="column-title">Locations</div>
+            ${locs.map(l=>`<div class="suggestion-item">${l.replace(new RegExp(q,'gi'),m=>`<span class="suggestion-highlight">${m}</span>`)}</div>`).join('')}
+          </div>
+          <div class="suggestions-column">
+            <div class="column-title">Suggestions</div>
+            ${sugs.map(s=>`<div class="suggestion-item">${s.replace(new RegExp(q,'gi'),m=>`<span class="suggestion-highlight">${m}</span>`)}</div>`).join('')}
+          </div>
+        </div>
+      `;
+      dropdown.classList.add('active');
+      dropdown.querySelectorAll('.suggestion-item').forEach(el=>{
+        el.onclick=()=>{ input.value = el.textContent; dropdown.classList.remove('active'); };
+      });
+    }
+
+    // Events
+    tabs.forEach(tab=>tab.onclick=()=>{
+      tabs.forEach(t=>t.classList.remove('active'));
+      tab.classList.add('active');
+      renderLinks(tab.dataset.category);
+      dropdown.classList.remove('active');
+    });
+
+    input.oninput = ()=>{
+      const q = input.value.trim().toLowerCase();
+      if(q.length>=2) showSuggestions(q);
+      else dropdown.classList.remove('active');
+    };
+
+    document.addEventListener('click',e=>{
+      if(!e.target.closest('.search-container')) dropdown.classList.remove('active');
+    });
+
+    button.onclick = ()=>alert(`Searching: ${input.value}`);
+
+    // Init
+    renderLinks('buy');
+  </script>
+</body>
 </html>
+
