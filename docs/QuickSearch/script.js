@@ -1,5 +1,4 @@
-//
-Const quickLinksData = {
+//Const quickLinksData = {
       rent: [
         "Apartments for Rent in Dubai", 
         "Apartments for Rent in Downtown Dubai", 
@@ -310,3 +309,4 @@ Const quickLinksData = {
     
     // Add autocomplete="off" to prevent browser's native autocomplete
     searchInput.setAttribute('autocomplete', 'off');
+*//
