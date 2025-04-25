@@ -306,7 +306,7 @@
     });
 
     // Set the background image using JavaScript for more dynamic control
-    document.querySelector('.hero-container').style.backgroundImage = "url('/api/placeholder/1200/500')";
+    document.querySelector('.hero-container').style.backgroundImage = "url('assets/background.jpg')";
     
     // Add autocomplete="off" to prevent browser's native autocomplete
     searchInput.setAttribute('autocomplete', 'off');
