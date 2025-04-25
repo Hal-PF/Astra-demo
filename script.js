@@ -21,7 +21,7 @@ const quickLinksData = {
     "Waterfront Developments",
     "Luxury Off-Plan Projects"
   ],
-  commercial: [
+  commercial: [ \
     "Office Spaces in Dubai",
     "Retail Shops for Rent",
     "Warehouses for Sale",
