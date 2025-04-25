@@ -2,20 +2,20 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Segoe UI','Roboto','Helvetica Neue',Arial,sans-serif;
 }
 
 body {
   background-color: #f8f9fa;
-  margin: 0;
   padding: 0;
+  margin: 0;
 }
 
 .hero-container {
   position: relative;
   width: 100%;
   height: 500px;
-  background-image: url('assets/background.jpg');
+  background-image: url('/Astra-demo/QuickSearch-v2/assets/background.jpg');
   background-size: cover;
   background-position: center;
   display: flex;
@@ -30,17 +30,17 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0,0,0,0.3);
   z-index: 1;
 }
 
 .container {
-  position: relative;
-  z-index: 2;
-  width: 100%;
   max-width: 1000px;
+  width: 90%;
   margin: 0 auto;
   padding: 20px;
+  z-index: 2;
+  position: relative;
 }
 
 .tab-container {
@@ -51,7 +51,7 @@ body {
 
 .tabs {
   display: flex;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255,255,255,0.9);
   border-radius: 25px;
   overflow: hidden;
   width: 100%;
@@ -59,26 +59,23 @@ body {
   height: 42px;
 }
 
-.tab:not(:last-child) {
-  border-right: 1px solid rgba(0, 0, 0, 0.1);
-}
-
 .tab {
   flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   padding: 8px 20px;
+  text-align: center;
   cursor: pointer;
   font-weight: 500;
   font-size: 16px;
   color: #555;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: background-color 0.2s;
 }
 
 .tab:hover {
-  background-color: rgba(240, 240, 255, 0.5);
+  background-color: rgba(240,240,255,0.5);
 }
 
 .tab.active {
@@ -87,12 +84,12 @@ body {
 }
 
 .tab.new::after {
-  content: 'NEW';
+  content: "NEW";
   position: absolute;
   top: 2px;
-  right: 8px;
+  right: 5px;
   background-color: #4B0082;
-  color: #fff;
+  color: white;
   font-size: 10px;
   padding: 2px 6px;
   border-radius: 3px;
@@ -106,24 +103,26 @@ body {
 }
 
 .search-bar {
-  position: relative;
   display: flex;
-  background-color: rgba(255, 255, 255, 0.85);
+  background-color: rgba(255,255,255,0.85);
   border-radius: 30px;
-  overflow: visible;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
   margin-bottom: 15px;
+  width: 100%;
+  position: relative;
+  z-index: 10;
 }
 
 .search-input {
   flex: 2;
+  border: none;
   padding: 15px 20px;
   font-size: 16px;
-  color: #555;
-  background: transparent;
-  border: none;
   outline: none;
   border-radius: 30px 0 0 30px;
+  background-color: transparent;
+  color: #555;
 }
 
 .search-input::placeholder {
@@ -147,20 +146,20 @@ body {
 
 .search-button {
   background-color: #EF5E4E;
-  color: #fff;
+  color: white;
   border: none;
   padding: 0 30px;
   font-weight: bold;
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.2s;
-  border-radius: 0 30px 30px 0;
 }
 
 .search-button:hover {
   background-color: #d84c3d;
 }
 
+/* Suggestions dropdown */
 .suggestions-dropdown {
   position: absolute;
   top: calc(100% + 5px);
@@ -168,38 +167,49 @@ body {
   width: 100%;
   max-height: 0;
   overflow: hidden;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  z-index: 11;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  z-index: 9;
   transition: max-height 0.3s ease-in-out;
 }
 
 .suggestions-dropdown.active {
-  max-height: 300px;
+  max-height: 400px;
   overflow-y: auto;
 }
 
-.suggestion-item {
+.suggestions-content {
   display: flex;
-  align-items: center;
-  padding: 12px 20px;
+  padding: 20px;
+  gap: 30px;
+}
+
+.suggestions-column {
+  flex: 1;
+}
+
+.column-title {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.suggestion-item {
+  padding: 8px 12px;
   cursor: pointer;
   transition: background-color 0.2s;
+  border-radius: 8px;
+  margin-bottom: 4px;
+  font-size: 14px;
+  color: #555;
 }
 
 .suggestion-item:hover {
   background-color: #f5f5f5;
-}
-
-.suggestion-icon {
-  margin-right: 10px;
-  color: #aaa;
-  font-size: 14px;
-}
-
-.suggestion-text {
-  color: #555;
 }
 
 .suggestion-highlight {
@@ -211,26 +221,42 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  padding: 5px 0 20px 0;
   max-width: 800px;
   margin: 0 auto;
-  padding: 5px 0 20px;
   justify-content: flex-start;
+  row-gap: 10px;
 }
 
 .quick-link {
-  padding: 8px 16px;
-  background: rgba(255, 255, 255, 0.7);
+  padding: 6px 12px;
+  background-color: rgba(255,255,255,0.7);
   color: #333;
-  border-radius: 20px;
-  font-size: 14px;
+  border-radius: 16px;
+  font-size: 12px;
   cursor: pointer;
-  transition: transform 0.2s, background 0.2s;
+  transition: all 0.2s;
   backdrop-filter: blur(4px);
+  margin-bottom: 3px;
+  line-height: 1.2;
 }
 
 .quick-link:hover {
-  background: rgba(255, 255, 255, 0.9);
+  background-color: #f0f0ff;
+  color: #4B0082;
   transform: translateY(-2px);
+}
+
+.chevron {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid #aaa;
+  border-bottom: 2px solid #aaa;
+  transform: rotate(45deg);
+  margin-left: 5px;
+  position: relative;
+  top: -2px;
 }
 
 @media (max-width: 768px) {
@@ -244,10 +270,17 @@ body {
     padding: 8px 12px;
     font-size: 14px;
   }
+  .search-input {
+    flex: 1;
+  }
   .hero-container {
     height: 400px;
   }
   .quick-links-container {
     justify-content: center;
+  }
+  .suggestions-content {
+    flex-direction: column;
+    gap: 20px;
   }
 }
