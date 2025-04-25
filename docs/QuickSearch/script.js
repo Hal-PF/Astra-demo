@@ -1,3 +1,4 @@
+//
 Const quickLinksData = {
       rent: [
         "Apartments for Rent in Dubai", 
