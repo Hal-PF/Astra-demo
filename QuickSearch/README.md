@@ -10,7 +10,7 @@
 ## Demo
 Open `demo.html` to interact with the live prototype:
 
-[View QuickSearch Demo](./demo.html)
+[View QuickSearch Demo](https://hal-pf.github.io/Astra-demo/QuickSearch/demo.html)
 
 
 ## Design Tokens
