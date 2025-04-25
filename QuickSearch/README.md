@@ -10,7 +10,7 @@
 ## Demo
 Open `demo.html` to interact with the live prototype:
 
-[View QuickSearch Demo](./QuickSearch/demo.html)
+[View QuickSearch Demo](./demo.html)
 
 
 ## Design Tokens
