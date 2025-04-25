@@ -23,9 +23,7 @@
       justify-content: center;
       align-items: center;
     }
-.hero-container .container {
-  padding-top: 120px;
-}
+
 
     .hero-overlay {
       position: absolute;
@@ -42,9 +40,13 @@
       width: 90%;
       margin: 0 auto;
       padding: 20px;
+       padding-top: 120px;
       z-index: 2;
       position: relative;
     }
+
+
+
 
     .tab-container {
       display: flex;
