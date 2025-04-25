@@ -21,7 +21,7 @@ const quickLinksData = {
     "Waterfront Developments",
     "Luxury Off-Plan Projects"
   ],
-  commercial: [ \
+  commercial: [
     "Office Spaces in Dubai",
     "Retail Shops for Rent",
     "Warehouses for Sale",
@@ -30,7 +30,45 @@ const quickLinksData = {
   ]
 };
 
-// Suggestions database by category
+// Locations database
+const locationsDatabase = {
+  marina: [
+    "Dubai Marina",
+    "Marina Residences",
+    "Marina Square",
+    "Marina Gate",
+    "Marina Promenade",
+    "Marina Wharf"
+  ],
+  downtown: [
+    "Downtown Dubai",
+    "Downtown Views",
+    "Downtown Boulevard",
+    "Downtown Skyscrapers"
+  ],
+  palm: [
+    "Palm Jumeirah",
+    "Palm Views",
+    "Palm Tower"
+  ],
+  creek: [
+    "Dubai Creek Harbour",
+    "Creek Beach",
+    "Creek Marina"
+  ],
+  business: [
+    "Business Bay",
+    "Business Tower",
+    "Business Square"
+  ],
+  maryam: [
+    "Maryam Island",
+    "Maryam Beach",
+    "Maryam Gate"
+  ]
+};
+
+// Search suggestions database
 const suggestionsDatabase = {
   rent: {
     marina: [
@@ -126,115 +164,202 @@ const suggestionsDatabase = {
   }
 };
 
-// DOM Elements
+// DOM elements
 const tabs = document.querySelectorAll('.tab');
 const quickLinksContainer = document.getElementById('quickLinks');
 const searchInput = document.querySelector('.search-input');
-const suggestionsDropdown = document.getElementById('suggestionsDropdown');
 const searchButton = document.querySelector('.search-button');
+const suggestionsDropdown = document.getElementById('suggestionsDropdown');
 
-// Render quick links based on category
-function renderQuickLinks(category) {
-  quickLinksContainer.innerHTML = '';
-  (quickLinksData[category] || []).forEach(link => {
-    const div = document.createElement('div');
-    div.className = 'quick-link';
-    div.textContent = link;
-    div.onclick = () => searchInput.value = link;
-    quickLinksContainer.appendChild(div);
-  });
-}
+// Initialize quick links for default category (buy)
+renderQuickLinks('buy');
 
-// Tab click handler
+// Add event listeners to tabs
 tabs.forEach(tab => {
-  tab.addEventListener('click', () => {
+  tab.addEventListener('click', function() {
     tabs.forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    renderQuickLinks(tab.dataset.category);
-    suggestionsDropdown.classList.remove('active');
+    this.classList.add('active');
+    const category = this.getAttribute('data-category');
+    renderQuickLinks(category);
+    closeSuggestions();
   });
 });
 
-// Search input suggestions handler
-searchInput.addEventListener('input', e => {
+// Handle search input
+searchInput.addEventListener('input', function(e) {
   const query = e.target.value.toLowerCase().trim();
-  const category = document.querySelector('.tab.active').dataset.category;
-  const db = suggestionsDatabase[category] || {};
-
-  if (query.length < 2) {
-    suggestionsDropdown.classList.remove('active');
-    return;
+  const activeCategory = document.querySelector('.tab.active').getAttribute('data-category');
+  if (query.length >= 2) {
+    showSuggestions(query, activeCategory);
+  } else {
+    closeSuggestions();
   }
+});
 
-  let matches = [];
-  Object.keys(db).forEach(key => {
+// Close suggestions on click outside
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.search-container')) {
+    closeSuggestions();
+  }
+});
+
+// Show search suggestions based on input and active category
+function showSuggestions(query, category) {
+  suggestionsDropdown.innerHTML = '';
+
+  // Find matching locations
+  let matchingLocations = [];
+  Object.keys(locationsDatabase).forEach(key => {
     if (key.includes(query)) {
-      matches.push(...db[key]);
+      matchingLocations = matchingLocations.concat(locationsDatabase[key]);
+    } else {
+      locationsDatabase[key].forEach(location => {
+        if (location.toLowerCase().includes(query)) {
+          matchingLocations.push(location);
+        }
+      });
     }
   });
 
-  if (!matches.length) {
-    Object.values(db).flat().forEach(item => {
-      if (item.toLowerCase().includes(query)) {
-        matches.push(item);
-      }
-    });
-  }
+  // Remove duplicates
+  matchingLocations = [...new Set(matchingLocations)];
 
-  if (!matches.length) {
-    const general = {
-      rent: ["Properties for Rent in Dubai", "Luxury Apartments for Rent"],
-      buy: ["Properties for Sale in Dubai", "Luxury Homes for Sale"],
-      new: ["New Developments in Dubai", "Off-Plan Projects"],
-      commercial: ["Commercial Spaces in Dubai", "Office Spaces for Rent"]
-    };
-    matches = general[category] || [];
-  }
-
-  suggestionsDropdown.innerHTML = '';
-  matches.slice(0, 5).forEach(item => {
-    const div = document.createElement('div');
-    div.className = 'suggestion-item';
-    div.innerHTML = `<div class="suggestion-icon">🔍</div><div class="suggestion-text">${item.replace(
-      new RegExp(query, 'i'),
-      match => `<span class="suggestion-highlight">${match}</span>`
-    )}</div>`;
-    div.onclick = () => {
-      searchInput.value = item;
-      suggestionsDropdown.classList.remove('active');
-    };
-    suggestionsDropdown.appendChild(div);
+  // Find matching suggestions
+  let matchingSuggestions = [];
+  Object.keys(suggestionsDatabase[category]).forEach(key => {
+    if (key.includes(query)) {
+      matchingSuggestions = matchingSuggestions.concat(suggestionsDatabase[category][key]);
+    } else {
+      suggestionsDatabase[category][key].forEach(suggestion => {
+        if (suggestion.toLowerCase().includes(query)) {
+          matchingSuggestions.push(suggestion);
+        }
+      });
+    }
   });
-  suggestionsDropdown.classList.add('active');
-});
 
-// Close suggestions on outside click
-document.addEventListener('click', e => {
-  if (!e.target.closest('.search-container')) {
-    suggestionsDropdown.classList.remove('active');
+  // Create two-column layout
+  const suggestionsContent = document.createElement('div');
+  suggestionsContent.className = 'suggestions-content';
+
+  // Create locations column
+  if (matchingLocations.length > 0) {
+    const locationsColumn = document.createElement('div');
+    locationsColumn.className = 'suggestions-column';
+
+    const locationsTitle = document.createElement('div');
+    locationsTitle.className = 'column-title';
+    locationsTitle.textContent = 'Locations';
+    locationsColumn.appendChild(locationsTitle);
+
+    matchingLocations.slice(0, 6).forEach(location => {
+      const locationItem = document.createElement('div');
+      locationItem.className = 'suggestion-item';
+      locationItem.innerHTML = highlightMatch(location, query);
+
+      locationItem.addEventListener('click', function() {
+        searchInput.value = location;
+        closeSuggestions();
+        searchInput.focus();
+      });
+
+      locationsColumn.appendChild(locationItem);
+    });
+
+    suggestionsContent.appendChild(locationsColumn);
+  }
+
+  // Create suggestions column
+  if (matchingSuggestions.length > 0) {
+    const suggestionsColumn = document.createElement('div');
+    suggestionsColumn.className = 'suggestions-column';
+
+    const suggestionsTitle = document.createElement('div');
+    suggestionsTitle.className = 'column-title';
+    suggestionsTitle.textContent = 'Suggestions';
+    suggestionsColumn.appendChild(suggestionsTitle);
+
+    matchingSuggestions.slice(0, 6).forEach(suggestion => {
+      const suggestionItem = document.createElement('div');
+      suggestionItem.className = 'suggestion-item';
+      suggestionItem.innerHTML = highlightMatch(suggestion, query);
+
+      suggestionItem.addEventListener('click', function() {
+        searchInput.value = suggestion;
+        closeSuggestions();
+        searchInput.focus();
+      });
+
+      suggestionsColumn.appendChild(suggestionItem);
+    });
+
+    suggestionsContent.appendChild(suggestionsColumn);
+  }
+
+  // Show dropdown if there are results
+  if (matchingLocations.length > 0 || matchingSuggestions.length > 0) {
+    suggestionsDropdown.appendChild(suggestionsContent);
+    suggestionsDropdown.classList.add('active');
+  } else {
+    closeSuggestions();
+  }
+}
+
+// Close suggestions dropdown
+function closeSuggestions() {
+  suggestionsDropdown.classList.remove('active');
+}
+
+// Highlight matching text in suggestion
+function highlightMatch(text, query) {
+  const lowerText = text.toLowerCase();
+  const lowerQuery = query.toLowerCase();
+  const index = lowerText.indexOf(lowerQuery);
+
+  if (index >= 0) {
+    const before = text.substring(0, index);
+    const match = text.substring(index, index + query.length);
+    const after = text.substring(index + query.length);
+    return before + '<span class="suggestion-highlight">' + match + '</span>' + after;
+  }
+
+  return text;
+}
+
+// Render quick links for the selected category
+function renderQuickLinks(category) {
+  quickLinksContainer.innerHTML = '';
+  quickLinksData[category].forEach(link => {
+    const linkElement = document.createElement('div');
+    linkElement.className = 'quick-link';
+    linkElement.textContent = link;
+    linkElement.addEventListener('click', function() {
+      searchInput.value = link;
+      searchInput.focus();
+      console.log('Searching for:', link, 'in category:', category);
+    });
+    quickLinksContainer.appendChild(linkElement);
+  });
+}
+
+// Search button functionality
+searchButton.addEventListener('click', function() {
+  const searchTerm = searchInput.value.trim();
+  if (searchTerm) {
+    const activeCategory = document.querySelector('.tab.active').getAttribute('data-category');
+    console.log('Searching for:', searchTerm, 'in category:', activeCategory);
   }
 });
 
-// Search button click handler
-searchButton.addEventListener('click', () => {
-  const term = searchInput.value.trim();
-  if (term) {
-    alert(`Search for: ${term}`);
+// Search input enter key functionality
+searchInput.addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') {
+    searchButton.click();
   }
 });
 
-// Initialize default quick links
-renderQuickLinks('buy');
-``` for GitHub Setup
-Follow these steps to create and populate your **design-system-demos** repository on GitHub:
+// Set the background image
+//document.querySelector('.hero-container').style.backgroundImage = "url('/api/placeholder/1200/500')";
 
-1. **Create the Repository**
-   - Go to GitHub and click **New** repository.
-   - Name it `design-system-demos` (or your preferred name).
-   - Add a description and set visibility (public/private).
-   - Click **Create repository**.
-
-2. **Clone Locally**
-   ```bash
-   git clone https://github.com/<your-org>/design-system-demos.git
-   cd design-system-demos
+// Prevent browser autocomplete
+searchInput.setAttribute('autocomplete', 'off');
