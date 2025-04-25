@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dubai Real Estate Quick Links Demo v2</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="hero-container">
+    <div class="hero-overlay"></div>
+    <div class="container">
+      <div class="tab-container">
+        <div class="tabs">
+          <div class="tab" data-category="rent">Rent</div>
+          <div class="tab active" data-category="buy">Buy</div>
+          <div class="tab new" data-category="new">New projects</div>
+          <div class="tab" data-category="commercial">Commercial</div>
+        </div>
+      </div>
+      
+      <div class="search-container">
+        <div class="search-bar">
+          <input type="text" class="search-input" placeholder="City, community or building" autocomplete="off">
+          <div class="search-filter">
+            <span class="search-filter-text">Property type</span><span class="chevron"></span>
+          </div>
+          <div class="search-filter">
+            <span class="search-filter-text">Beds & Baths</span><span class="chevron"></span>
+          </div>
+          <button class="search-button">Search</button>
+        </div>
+        <div class="suggestions-dropdown" id="suggestionsDropdown"></div>
+      </div>
+      
+      <div class="quick-links-container" id="quickLinks"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
