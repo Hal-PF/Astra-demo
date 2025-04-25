@@ -203,23 +203,56 @@ document.addEventListener('click', function(e) {
   }
 });
 
-// Show search suggestions based on input and active category
-function showSuggestions(query, category) {
-  suggestionsDropdown.innerHTML = '';
+// // Show search suggestions based on input and active category
+// function showSuggestions(query, category) {
+//   suggestionsDropdown.innerHTML = '';
 
-  // Find matching locations
-  let matchingLocations = [];
-  Object.keys(locationsDatabase).forEach(key => {
-    if (key.includes(query)) {
-      matchingLocations = matchingLocations.concat(locationsDatabase[key]);
-    } else {
-      locationsDatabase[key].forEach(location => {
-        if (location.toLowerCase().includes(query)) {
-          matchingLocations.push(location);
-        }
-      });
-    }
-  });
+//   // Find matching locations
+//   let matchingLocations = [];
+//   Object.keys(locationsDatabase).forEach(key => {
+//     if (key.includes(query)) {
+//       matchingLocations = matchingLocations.concat(locationsDatabase[key]);
+//     } else {
+//       locationsDatabase[key].forEach(location => {
+//         if (location.toLowerCase().includes(query)) {
+//           matchingLocations.push(location);
+//         }
+//       });
+//     }
+//   });
+
+function showSuggestions(query, category) {
+  const locations = Object.values(locationsDatabase)
+    .flat()
+    .filter(l => l.toLowerCase().includes(query.toLowerCase()));
+  let suggs = (quickLinksData[category]||[])
+    .filter(s => s.toLowerCase().includes(query.toLowerCase()));
+
+  const html = `
+    <div class="suggestions-content">
+      <div class="locations-column">
+        <div class="column-title">Locations</div>
+        ${locations.map(l=>`<div class="suggestion-item">${l}</div>`).join('')}
+      </div>
+      <div class="suggestions-column">
+        <div class="column-title">Suggestions</div>
+        ${suggs.map(s=>`<div class="suggestion-item">${s}</div>`).join('')}
+      </div>
+    </div>
+  `;
+  suggestionsDropdown.innerHTML = html;
+  suggestionsDropdown.classList.add('active');
+
+  suggestionsDropdown
+    .querySelectorAll('.suggestion-item')
+    .forEach(el => el.addEventListener('click', () => {
+      searchInput.value = el.textContent;
+      closeSuggestions();
+    }));
+}
+
+
+  
 
   // Remove duplicates
   matchingLocations = [...new Set(matchingLocations)];
