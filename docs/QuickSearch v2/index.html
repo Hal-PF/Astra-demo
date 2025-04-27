@@ -1927,7 +1927,7 @@
       display: flex;
       align-items: center;
       gap: 15px;
-      padding-top: 10px;
+      padding-top: 24px;
     }
 
     .quick-links-title {
@@ -2101,6 +2101,7 @@
       flex-wrap: nowrap;
       gap: 10px;
       max-width: 100%;
+     /* padding: 24px 0 4px 0; */
       margin: 0 auto;
       justify-content: flex-start;
       position: relative;
@@ -2122,6 +2123,7 @@
       background-color:#e7e5f4;
       color: #6459b2;
       border-radius: 16px;
+      border: solid #6459b2;
       font-size: 12px;
       cursor: pointer;
       backdrop-filter: blur(4px);
@@ -2204,9 +2206,9 @@
       }
 
       .hero-overlay {
-        width: 90%;
+        width: 100%;
         height: auto;
-        padding: 20px;
+        padding: 10px;
         top: auto;
         margin: 0 auto;
       }
@@ -2257,6 +2259,16 @@
       .search-button {
         padding: 0 16px;
       }
+      .quick-links-wrapper {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.quick-links-container {
+  width: 100%;
+  padding: 8px 0;
+}
       
       /* Quick links already scrollable, no additional changes needed for mobile */
 
