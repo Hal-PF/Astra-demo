@@ -2810,7 +2810,7 @@
         const activeCategory = document.querySelector('.tab.active').getAttribute('data-category');
         currentSetIndex[activeCategory] = (currentSetIndex[activeCategory] + 1) % quickLinksData[activeCategory].length;
         renderQuickLinks(activeCategory, true);
-      }, 3000);
+      }, 5000);
     }
 
     // Stop rotation when user hovers over quick links
