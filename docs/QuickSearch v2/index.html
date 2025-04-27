@@ -1923,7 +1923,7 @@
     .tab.new::after {
       content: "NEW";
       position: absolute;
-      top: 2px;
+      top: 0px;
       right: 5px;
       background-color: #4B0082;
       color: white;
@@ -2257,6 +2257,11 @@
         padding: 8px 12px;
         font-size: 14px;
       }
+          .tab.new::after {
+    content: "NEW";
+    position: absolute;
+    top: -8px;
+          }
       
       /* Hide filters on mobile */
       .search-filter {
