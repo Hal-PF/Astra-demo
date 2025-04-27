@@ -221,7 +221,7 @@
 </body>
 </html> --> -->
 
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -987,3 +987,820 @@
   </script>
 </body>
 </html>
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dubai Real Estate Quick Links Demo</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f8f9fa;
+      padding: 0;
+      margin: 0;
+    }
+
+    .hero-container {
+      position: absolute;
+      width: 100%;
+      height: 800px;
+      background-image: url('https://hal-pf.github.io/Astra-demo/QuickSearch/assets/background.jpg');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      padding-bottom:100px;
+    }
+
+    .hero-overlay {
+     position: relative;
+   /* position: absolute;*/
+    top: 10%;
+    left: 0;
+    width: 75%;
+    height: 45%;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 30px;
+        justify-content: flex-end;
+      align-items: center;
+      padding-bottom:100px;
+    }
+   
+
+    .container {
+      max-width: 1200px;
+      width: 90%;
+      margin: 0 auto;
+      padding: 20px;
+      z-index: 2;
+      position: relative;
+        justify-content: flex-end;
+      align-items: center;
+      padding-bottom:100px;
+    }
+
+    .tab-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 15px;
+    }
+
+    .tabs {
+      display: flex;
+      background-color: rgba(255, 255, 255, 1);
+      border-radius: 25px;
+      overflow: hidden;
+      width: 100%;
+      max-width: 800px;
+      height: 42px;
+    }
+
+    .tab {
+      padding: 8px 20px;
+      flex: 1;
+      text-align: center;
+      cursor: pointer;
+      font-weight: 400;
+      font-size: 16px;
+      color: #555;
+      position: relative;
+      display: flex;
+      border-left: 1px solid #ccc;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.2s;
+    }
+
+    .tab:hover {
+      background-color: rgba(240, 240, 255, 0.5);
+    }
+
+    .tab.active {
+      background-color: #e7e5f4;
+      color: #6459b2;
+      font-weight: 500;
+    }
+
+    .tab.new::after {
+      content: "NEW";
+      position: absolute;
+      top: 2px;
+      right: 5px;
+      background-color: #4B0082;
+      color: white;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+
+    .quick-links-wrapper {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* Added style for the title section */
+.quick-links-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 1px;
+  padding-top:10px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Added style for the trending icon */
+.trending-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  color: #EF5E4E;
+}
+
+    .search-container {
+      position: relative;
+      width: 100%;
+     /* max-width: 800px;*/
+      margin: 0 auto;
+    }
+
+    .search-bar {
+      display: flex;
+      background-color: rgba(255, 255, 255, 1);
+      border-radius: 30px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      margin-bottom: 15px;
+      width: 100%;
+      position: relative;
+      z-index: 10;
+    }
+
+    .search-input {
+      flex: 2;
+      border: none;
+      padding: 20px 20px;
+      font-size: 16px;
+      outline: none;
+      border-radius: 30px 0 0 30px;
+      background-color: transparent;
+      color: #555;
+    }
+
+    .search-input::placeholder {
+      color: #aaa;
+    }
+
+    .search-filter {
+      display: flex;
+      align-items: center;
+      padding: 0 15px;
+      color: #555;
+      font-weight: 400;
+      border-left: 1px solid #ccc;
+      cursor: pointer;
+    }
+
+    .search-filter-text {
+      margin-right: 5px;
+      font-size: 14px;
+    }
+
+    .search-button {
+      background-color: #EF5E4E;
+      color: white;
+      border: none;
+      padding: 0 30px;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .search-button:hover {
+      background-color: #d84c3d;
+    }
+
+    /* Suggestions dropdown */
+    .suggestions-dropdown {
+      position: absolute;
+      top: calc(100% + 5px);
+      left: 0;
+      width: 100%;
+      max-height: 0;
+      overflow: hidden;
+      background-color: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      z-index: 9;
+      transition: max-height 0.3s ease-in-out;
+    }
+
+    .suggestions-dropdown.active {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .suggestions-content {
+      display: flex;
+      padding: 20px;
+      gap: 30px;
+    }
+
+    .suggestions-column {
+      flex: 1;
+    }
+
+    .column-title {
+      font-weight: 600;
+      color: #333;
+      font-size: 14px;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .suggestion-item {
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      border-radius: 8px;
+      margin-bottom: 4px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .suggestion-item:hover {
+      background-color: #f5f5f5;
+    }
+
+    .suggestion-highlight {
+      color: #4B0082;
+      font-weight: 500;
+    }
+
+    .quick-links-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 24px 0 24px 0;
+      max-width: 100%;
+      margin: 0 auto;
+      justify-content: flex-start;
+      row-gap: 10px;
+      position: relative;
+      min-height: 80px; /* Prevent layout shift */
+      
+    }
+
+    .quick-link {
+      padding: 8px 16px;
+      background-color:#e7e5f4;
+      color: #6459b2;
+      border-radius: 16px;
+      font-size: 12px;
+      cursor: pointer;
+      backdrop-filter: blur(4px);
+      margin-bottom: 3px;
+      line-height: 1.2;
+      /* Animation properties */
+      animation: fadeInScale 0.3s ease-out forwards;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: background-color 0.2s, color 0.2s, transform 0.2s;
+    }
+
+    .quick-link:hover {
+      background-color: #f0f0ff;
+      color: #4B0082;
+      transform: translateY(-2px) scale(1);
+    }
+
+    /* Fade out animation */
+    .quick-link.fade-out {
+      animation: fadeOutScale 0.2s ease-in forwards;
+    }
+
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes fadeOutScale {
+      from {
+        opacity: 1;
+        transform: scale(1);
+      }
+      to {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+    }
+
+    .chevron {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-right: 2px solid #aaa;
+      border-bottom: 2px solid #aaa;
+      transform: rotate(45deg);
+      margin-left: 5px;
+      position: relative;
+      top: -2px;
+    }
+
+    @media (max-width: 768px) {
+      .search-filter-text {
+        display: none;
+      }
+      
+      .tabs {
+        width: 100%;
+      }
+      
+      .tab {
+        padding: 8px 12px;
+        font-size: 14px;
+      }
+      
+      .search-input {
+        flex: 1;
+      }
+
+      .hero-container {
+        height: 400px;
+      }
+      
+      .quick-links-container {
+        justify-content: center;
+      }
+
+      .suggestions-content {
+        flex-direction: column;
+        gap: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="hero-container">
+      <div class="hero-overlay">
+    <div class="container">
+      <div class="tab-container">
+        <div class="tabs">
+          <div class="tab" data-category="rent">Rent</div>
+          <div class="tab active" data-category="buy">Buy</div>
+          <div class="tab new" data-category="new">New projects</div>
+          <div class="tab" data-category="commercial">Commercial</div>
+        </div>
+      </div>
+    
+      <div class="search-container">
+        <div class="search-bar">
+          <input type="text" class="search-input" placeholder="City, community or building" autocomplete="off">
+          <div class="search-filter">
+            <span class="search-filter-text">Property type</span>
+            <span class="chevron"></span>
+          </div>
+          <div class="search-filter">
+            <span class="search-filter-text">Beds & Baths</span>
+            <span class="chevron"></span>
+          </div>
+          <button class="search-button">Search</button>
+        </div>
+        
+        <div class="suggestions-dropdown" id="suggestionsDropdown"></div>
+      </div>
+      
+      
+    
+<div class="quick-links-wrapper">
+  <div class="quick-links-title">
+    <svg class="trending-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M23 6l-9.5 9.5-5-5L1 18"></path>
+      <path d="M17 6h6v6"></path>
+    </svg>
+    <span>Trending Searches</span>
+  </div>
+  <div class="quick-links-container" id="quickLinks"></div>
+</div>
+   </div>
+      
+    </div>
+  </div>
+
+  <script>
+    // Quick links data by category
+    const quickLinksData = {
+      rent: [
+        "Apartments for Rent in Dubai", 
+        "Apartments for Rent in Downtown Dubai", 
+        "Apartments for Rent in Dubai Marina",
+        "Villas for Rent in Dubai",
+        "Studios for Rent in Dubai"
+      ],
+      buy: [
+        "Apartments for Sale in Business Bay", 
+        "Apartments for Sale in Dubai Marina",
+        "Villas for Sale in Dubai",
+        "Penthouses for Sale",
+        "Townhouses for Sale"
+      ],
+      new: [
+        "Off Plan Projects in UAE", 
+        "New Projects in Dubai", 
+        "New Projects in Abu Dhabi",
+        "Waterfront Developments",
+        "Luxury Off-Plan Projects"
+      ],
+      commercial: [
+        "Office Spaces in Dubai", 
+        "Retail Shops for Rent", 
+        "Warehouses for Sale", 
+        "Commercial Properties in Business Bay",
+        "Commercial Plots"
+      ]
+    };
+
+    // Locations database
+    const locationsDatabase = {
+      marina: [
+        "Dubai Marina",
+        "Marina Residences",
+        "Marina Square",
+        "Marina Gate",
+        "Marina Promenade",
+        "Marina Wharf"
+      ],
+      downtown: [
+        "Downtown Dubai",
+        "Downtown Views",
+        "Downtown Boulevard",
+        "Downtown Skyscrapers"
+      ],
+      palm: [
+        "Palm Jumeirah",
+        "Palm Views",
+        "Palm Tower"
+      ],
+      creek: [
+        "Dubai Creek Harbour",
+        "Creek Beach",
+        "Creek Marina"
+      ],
+      business: [
+        "Business Bay",
+        "Business Tower",
+        "Business Square"
+      ],
+      maryam: [
+        "Maryam Island",
+        "Maryam Beach",
+        "Maryam Gate"
+      ]
+    };
+
+    // Search suggestions database
+    const suggestionsDatabase = {
+      rent: {
+        marina: [
+          "Apartments for Rent in Dubai Marina",
+          "1-Bedroom Apartments for Rent in Dubai Marina",
+          "Luxury Apartments for Rent in Dubai Marina",
+          "Villas for Rent near Dubai Marina"
+        ],
+        downtown: [
+          "Apartments for Rent in Downtown Dubai",
+          "Luxury Studios for Rent in Downtown",
+          "2-Bedroom Apartments for Rent in Downtown Dubai"
+        ],
+        burj: [
+          "Apartments for Rent with Burj Khalifa View",
+          "Luxury Apartments for Rent near Burj Khalifa",
+          "Penthouses for Rent near Burj Khalifa",
+          "Apartments for Rent in Burj Residence"
+        ],
+        palm: [
+          "Villas for Rent in Palm Jumeirah",
+          "Beach Houses for Rent in Palm Jumeirah",
+          "Luxury Apartments for Rent in Palm Jumeirah"
+        ]
+      },
+      buy: {
+        marina: [
+          "Apartments for Sale in Dubai Marina",
+          "3-Bedroom Apartments for Sale in Dubai Marina",
+          "Penthouses for Sale in Dubai Marina",
+          "Off-Plan Properties for Sale in Dubai Marina"
+        ],
+        downtown: [
+          "Apartments for Sale in Downtown Dubai",
+          "Luxury Units for Sale in Downtown Dubai",
+          "Investment Properties for Sale in Downtown"
+        ],
+        burj: [
+          "Apartments for Sale with Burj Khalifa View",
+          "Luxury Properties for Sale near Burj Khalifa",
+          "Investment Opportunities near Burj Khalifa"
+        ],
+        palm: [
+          "Villas for Sale in Palm Jumeirah",
+          "Beach Properties for Sale in Palm Jumeirah",
+          "Signature Villas for Sale in Palm Jumeirah"
+        ]
+      },
+      new: {
+        marina: [
+          "New Developments in Dubai Marina",
+          "Off-Plan Projects in Dubai Marina",
+          "Dubai Marina Upcoming Projects",
+          "Waterfront New Projects in Dubai Marina"
+        ],
+        downtown: [
+          "New Launches in Downtown Dubai",
+          "Off-Plan Apartments in Downtown Dubai",
+          "Emaar New Projects in Downtown"
+        ],
+        burj: [
+          "New Projects near Burj Khalifa",
+          "Off-Plan Properties with Burj Khalifa View",
+          "Luxury New Developments around Burj Khalifa"
+        ],
+        creek: [
+          "New Projects in Dubai Creek Harbour",
+          "Waterfront Developments in Dubai Creek",
+          "Off-Plan Apartments in Dubai Creek"
+        ]
+      },
+      commercial: {
+        marina: [
+          "Office Spaces for Sale in Dubai Marina",
+          "Retail Units for Rent in Dubai Marina",
+          "Commercial Properties in Dubai Marina"
+        ],
+        downtown: [
+          "Office Spaces in Downtown Dubai",
+          "Commercial Properties for Investment in Downtown",
+          "Retail Shops for Rent in Downtown Dubai"
+        ],
+        burj: [
+          "Office Spaces in Burj Khalifa",
+          "Commercial Units near Burj Khalifa",
+          "Retail Spaces for Rent with Burj Khalifa View"
+        ],
+        business: [
+          "Office Spaces in Business Bay",
+          "Commercial Properties in Business Bay",
+          "Retail Units for Rent in Business Bay"
+        ]
+      }
+    };
+
+    // DOM elements
+    const tabs = document.querySelectorAll('.tab');
+    const quickLinksContainer = document.getElementById('quickLinks');
+    const searchInput = document.querySelector('.search-input');
+    const searchButton = document.querySelector('.search-button');
+    const suggestionsDropdown = document.getElementById('suggestionsDropdown');
+
+    // Initialize quick links for default category (buy)
+    renderQuickLinks('buy');
+
+    // Add event listeners to tabs
+    tabs.forEach(tab => {
+      tab.addEventListener('click', function() {
+        tabs.forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        const category = this.getAttribute('data-category');
+        animateQuickLinksTransition(category);
+        closeSuggestions();
+      });
+    });
+
+    // Handle search input
+    searchInput.addEventListener('input', function(e) {
+      const query = e.target.value.toLowerCase().trim();
+      const activeCategory = document.querySelector('.tab.active').getAttribute('data-category');
+      
+      if (query.length >= 2) {
+        showSuggestions(query, activeCategory);
+      } else {
+        closeSuggestions();
+      }
+    });
+
+    // Close suggestions on click outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.search-container')) {
+        closeSuggestions();
+      }
+    });
+
+    // Animate quick links transition
+    function animateQuickLinksTransition(category) {
+      const currentLinks = quickLinksContainer.querySelectorAll('.quick-link');
+      
+      // Fade out current links
+      currentLinks.forEach((link) => {
+        link.classList.add('fade-out');
+      });
+      
+      // Wait for fade out animation to complete
+      setTimeout(() => {
+        renderQuickLinks(category);
+      }, 200);
+    }
+
+    // Show search suggestions based on input and active category
+    function showSuggestions(query, category) {
+      suggestionsDropdown.innerHTML = '';
+      
+      // Find matching locations
+      let matchingLocations = [];
+      Object.keys(locationsDatabase).forEach(key => {
+        if (key.includes(query)) {
+          matchingLocations = matchingLocations.concat(locationsDatabase[key]);
+        } else {
+          locationsDatabase[key].forEach(location => {
+            if (location.toLowerCase().includes(query)) {
+              matchingLocations.push(location);
+            }
+          });
+        }
+      });
+      
+      // Remove duplicates
+      matchingLocations = [...new Set(matchingLocations)];
+      
+      // Find matching suggestions
+      let matchingSuggestions = [];
+      Object.keys(suggestionsDatabase[category]).forEach(key => {
+        if (key.includes(query)) {
+          matchingSuggestions = matchingSuggestions.concat(suggestionsDatabase[category][key]);
+        } else {
+          suggestionsDatabase[category][key].forEach(suggestion => {
+            if (suggestion.toLowerCase().includes(query)) {
+              matchingSuggestions.push(suggestion);
+            }
+          });
+        }
+      });
+      
+      // Create two-column layout
+      const suggestionsContent = document.createElement('div');
+      suggestionsContent.className = 'suggestions-content';
+      
+      // Create locations column
+      if (matchingLocations.length > 0) {
+        const locationsColumn = document.createElement('div');
+        locationsColumn.className = 'suggestions-column';
+        
+        const locationsTitle = document.createElement('div');
+        locationsTitle.className = 'column-title';
+        locationsTitle.textContent = 'Locations';
+        locationsColumn.appendChild(locationsTitle);
+        
+        matchingLocations.slice(0, 6).forEach(location => {
+          const locationItem = document.createElement('div');
+          locationItem.className = 'suggestion-item';
+          locationItem.innerHTML = highlightMatch(location, query);
+          
+          locationItem.addEventListener('click', function() {
+            searchInput.value = location;
+            closeSuggestions();
+            searchInput.focus();
+          });
+          
+          locationsColumn.appendChild(locationItem);
+        });
+        
+        suggestionsContent.appendChild(locationsColumn);
+      }
+      
+      // Create suggestions column
+      if (matchingSuggestions.length > 0) {
+        const suggestionsColumn = document.createElement('div');
+        suggestionsColumn.className = 'suggestions-column';
+        
+        const suggestionsTitle = document.createElement('div');
+        suggestionsTitle.className = 'column-title';
+        suggestionsTitle.textContent = 'Suggestions';
+        suggestionsColumn.appendChild(suggestionsTitle);
+        
+        matchingSuggestions.slice(0, 6).forEach(suggestion => {
+          const suggestionItem = document.createElement('div');
+          suggestionItem.className = 'suggestion-item';
+          suggestionItem.innerHTML = highlightMatch(suggestion, query);
+          
+          suggestionItem.addEventListener('click', function() {
+            searchInput.value = suggestion;
+            closeSuggestions();
+            searchInput.focus();
+          });
+          
+          suggestionsColumn.appendChild(suggestionItem);
+        });
+        
+        suggestionsContent.appendChild(suggestionsColumn);
+      }
+      
+      // Show dropdown if there are results
+      if (matchingLocations.length > 0 || matchingSuggestions.length > 0) {
+        suggestionsDropdown.appendChild(suggestionsContent);
+        suggestionsDropdown.classList.add('active');
+      } else {
+        closeSuggestions();
+      }
+    }
+
+    // Close suggestions dropdown
+    function closeSuggestions() {
+      suggestionsDropdown.classList.remove('active');
+    }
+
+    // Highlight matching text in suggestion
+    function highlightMatch(text, query) {
+      const lowerText = text.toLowerCase();
+      const lowerQuery = query.toLowerCase();
+      const index = lowerText.indexOf(lowerQuery);
+      
+      if (index >= 0) {
+        const before = text.substring(0, index);
+        const match = text.substring(index, index + query.length);
+        const after = text.substring(index + query.length);
+        
+        return `${before}<span class="suggestion-highlight">${match}</span>${after}`;
+      }
+      
+      return text;
+    }
+
+    // Render quick links for the selected category
+    function renderQuickLinks(category) {
+      quickLinksContainer.innerHTML = '';
+      
+      quickLinksData[category].forEach((link) => {
+        const linkElement = document.createElement('div');
+        linkElement.className = 'quick-link';
+        linkElement.textContent = link;
+        
+        // Remove staggered animation
+        // linkElement.style.animationDelay = `${index * 0.05}s`;
+        
+        linkElement.addEventListener('click', function() {
+          searchInput.value = link;
+          searchInput.focus();
+          console.log(`Searching for: ${link} in category: ${category}`);
+        });
+        
+        quickLinksContainer.appendChild(linkElement);
+      });
+    }
+
+    // Search button functionality
+    searchButton.addEventListener('click', function() {
+      const searchTerm = searchInput.value.trim();
+      if (searchTerm) {
+        const activeCategory = document.querySelector('.tab.active').getAttribute('data-category');
+        console.log(`Searching for: ${searchTerm} in category: ${activeCategory}`);
+      }
+    });
+
+    // Search input enter key functionality
+    searchInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        searchButton.click();
+      }
+    });
+
+    // Set the background image
+   // document.querySelector('.hero-container').style.backgroundImage = "url('assets/background.jpg')";
+   
+    // Add autocomplete="off" to prevent browser's native autocomplete
+    searchInput.setAttribute('autocomplete', 'off');
+  </script>
+</body>
+</html>
+
+
